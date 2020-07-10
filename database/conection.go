@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 )
 
 // This function return db connection
@@ -29,7 +30,7 @@ func GetConnection() *sql.DB {
 		log.Fatal(err)
 	}
 
-	defer db.Close()
+	// defer db.Close()
 
 	return db
 }
