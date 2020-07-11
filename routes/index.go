@@ -23,8 +23,8 @@ func New() Server {
 
 	r := mux.NewRouter()
 
-	// Routes
-	r.HandleFunc("/students", a.CreateStudent).Methods(http.MethodGet)
+	// Routes Studens
+	r.HandleFunc("/students", a.CreateStudent).Methods(http.MethodPost)
 
 	a.router = r
 	return a
