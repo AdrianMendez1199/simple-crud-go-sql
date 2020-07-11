@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/AdrianMendez1199/simple-crud-go-sql/database"
@@ -46,4 +47,37 @@ func CreateStudent(s Student) error {
 
 	return nil
 
+}
+
+func GetStudents() (error, []Student) {
+	query := `SELECT *FROM studens`
+
+	db := database.GetConnection()
+	defer db.Close()
+
+	stmt, err := db.Prepare(query)
+	defer stmt.Close()
+
+	if err != nil {
+		return err, nil
+	}
+
+	result, err := stmt.Query()
+
+	if err != nil {
+		return err, nil
+	}
+
+	// for result.Next() {
+	// 	fmt.Println("TRS")
+	// }
+
+	fmt.Println(result)
+	return nil, []Student{
+		{
+			Name:   "TEST",
+			Age:    21,
+			Active: true,
+		},
+	}
 }
