@@ -78,7 +78,7 @@ func GetStudents() ([]models.Student, error) {
 	return students, nil
 }
 
-func GetUserById(id int) (models.Student, error) {
+func GetUserById(id string) (models.Student, error) {
 	query := `SELECT name, age, active, create_at, update_at
 						FROM studens WHERE id = $1`
 

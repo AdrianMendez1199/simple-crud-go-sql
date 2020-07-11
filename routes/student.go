@@ -7,6 +7,7 @@ import (
 
 	"github.com/AdrianMendez1199/simple-crud-go-sql/models"
 	"github.com/AdrianMendez1199/simple-crud-go-sql/repository"
+	"github.com/gorilla/mux"
 )
 
 type Response struct {
@@ -55,4 +56,21 @@ func (a *API) GetStudents(w http.ResponseWriter, r *http.Request) {
 	} else {
 		json.NewEncoder(w).Encode(response)
 	}
+}
+
+func (a *API) GetStudentById(w http.ResponseWriter, r *http.Request) {
+
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	response, err := repository.GetUserById(id)
+	w.Header().Set("Content-Type", "application/json")
+
+	if err != nil {
+		res = &Response{Status: "NOK", Message: "error testing"}
+		json.NewEncoder(w).Encode(res)
+	} else {
+		json.NewEncoder(w).Encode(response)
+	}
+
 }
