@@ -14,12 +14,12 @@ type Response struct {
 	Message string `json:"message"`
 }
 
+var res = &Response{}
+var s models.Student
+
+// create user into db
 func (a *API) CreateStudent(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
-
-	res := &Response{}
-
-	var s models.Student
 
 	err := decoder.Decode(&s)
 
@@ -36,9 +36,23 @@ func (a *API) CreateStudent(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatal(err)
 		}
+
 		w.WriteHeader(http.StatusCreated)
 		res = &Response{Status: "OK", Message: "user created"}
 		json.NewEncoder(w).Encode(res)
 	}
 
+}
+
+func (a *API) GetStudents(w http.ResponseWriter, r *http.Request) {
+	response, err := repository.GetStudents()
+
+	w.Header().Set("Content-Type", "application/json")
+
+	if err != nil {
+		res = &Response{Status: "NOK", Message: "error testing"}
+		json.NewEncoder(w).Encode(res)
+	} else {
+		json.NewEncoder(w).Encode(response)
+	}
 }
