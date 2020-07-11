@@ -1,22 +1,15 @@
 package main
 
-import (
-	"fmt"
-	"log"
-
-	"github.com/AdrianMendez1199/simple-crud-go-sql/models"
-)
-
 func main() {
 	// students, err := models.GetStudents()
 
-	student, err := models.GetUserById(1)
+	// student, err := models.GetUserById(1)
 
-	if err != nil {
-		log.Fatal(err)
-	}
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
-	fmt.Println(student)
+	// fmt.Println(student)
 
 	// for _, student := range students {
 	// }
