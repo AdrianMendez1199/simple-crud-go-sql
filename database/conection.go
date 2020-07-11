@@ -30,7 +30,5 @@ func GetConnection() *sql.DB {
 		log.Fatal(err)
 	}
 
-	// defer db.Close()
-
 	return db
 }
