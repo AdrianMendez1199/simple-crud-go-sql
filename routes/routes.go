@@ -25,7 +25,7 @@ func (a *API) Router() http.Handler {
 	return a.router
 }
 
-func initService() *API {
+func initServices() *API {
 	//User Repo
 	u := new(repository.Student)
 
@@ -35,7 +35,7 @@ func initService() *API {
 func New() Server {
 
 	a := &API{}
-	initService()
+	initServices()
 
 	r := mux.NewRouter()
 
