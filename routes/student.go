@@ -14,7 +14,7 @@ var res = &Response{}
 func (a *API) CreateStudent(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 
-	err := decoder.Decode(&a.userRepo)
+	err := decoder.Decode(&a.studentRepo)
 
 	w.Header().Set("Content-Type", "application/json")
 
@@ -24,7 +24,7 @@ func (a *API) CreateStudent(w http.ResponseWriter, r *http.Request) {
 		// panic(err)
 	} else {
 		// Create student in DB
-		err = a.userRepo.CreateStudent(a.userRepo)
+		err = a.studentRepo.CreateStudent(a.studentRepo)
 
 		if err != nil {
 			log.Fatal(err)
@@ -38,7 +38,7 @@ func (a *API) CreateStudent(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *API) GetStudents(w http.ResponseWriter, r *http.Request) {
-	studentRepo, err := a.userRepo.GetStudents()
+	studentRepo, err := a.studentRepo.GetStudents()
 
 	w.Header().Set("Content-Type", "application/json")
 
@@ -55,7 +55,7 @@ func (a *API) GetStudentById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	studentRepo, err := a.userRepo.GetUserById(id)
+	studentRepo, err := a.studentRepo.GetUserById(id)
 	w.Header().Set("Content-Type", "application/json")
 
 	if err != nil {

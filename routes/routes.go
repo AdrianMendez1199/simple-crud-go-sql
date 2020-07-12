@@ -8,8 +8,9 @@ import (
 )
 
 type API struct {
-	router   http.Handler
-	userRepo *repository.Student
+	router      http.Handler
+	studentRepo *repository.Student
+	teacherRepo *repository.Teacher
 }
 
 type Response struct {
@@ -28,8 +29,12 @@ func (a *API) Router() http.Handler {
 func initServices() *API {
 	//User Repo
 	u := new(repository.Student)
+	t := new(repository.Teacher)
 
-	return &API{userRepo: u}
+	return &API{
+		studentRepo: u,
+		teacherRepo: t,
+	}
 }
 
 func New() Server {
@@ -44,6 +49,8 @@ func New() Server {
 	r.HandleFunc("/students", a.GetStudents).Methods(http.MethodGet)
 	r.HandleFunc("/student/{id}", a.GetStudentById).Methods(http.MethodGet)
 
+	// Routes Teacher
+	r.HandleFunc("/teacher", a.createTeacher).Methods(http.MethodPost)
 	a.router = r
 	return a
 }
