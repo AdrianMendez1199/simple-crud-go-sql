@@ -69,19 +69,19 @@ func (s *Student) GetStudents() ([]Student, error) {
 
 	for rows.Next() {
 
-		s := Student{}
+		st := Student{}
 
 		err := rows.Scan(
-			&s.ID,
-			&s.Name,
-			&s.Age,
-			&s.Active,
+			&st.ID,
+			&st.Name,
+			&st.Age,
+			&st.Active,
 		)
 
 		if err != nil {
 			return nil, err
 		}
-		students = append(students, s)
+		students = append(students, st)
 	}
 
 	return students, nil

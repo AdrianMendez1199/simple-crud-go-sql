@@ -47,5 +47,17 @@ func (a *API) getTeacherById(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(&teacher)
+}
 
+func (a *API) getTeachers(w http.ResponseWriter, r *http.Request) {
+
+	teachers, err := a.teacherRepo.GetTeachers()
+
+	w.Header().Set("Content-Type", "application/json")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	json.NewEncoder(w).Encode(&teachers)
 }

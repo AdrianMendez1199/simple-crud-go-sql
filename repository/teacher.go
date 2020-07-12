@@ -81,3 +81,38 @@ func (tc *Teacher) GetTeacherById(id string) (*Teacher, error) {
 
 	return &t, nil
 }
+
+func (tc *Teacher) GetTeachers() ([]Teacher, error) {
+	query := `SELECT name, lastname, age
+					FROM teacher`
+
+	var teachers []Teacher
+
+	db := database.GetConnection()
+	defer db.Close()
+
+	rows, err := db.Query(query)
+	defer rows.Close()
+
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		tch := Teacher{}
+
+		err := rows.Scan(
+			&tch.Name,
+			&tch.LastName,
+			&tch.Age,
+		)
+
+		if err != nil {
+			return nil, err
+		}
+
+		teachers = append(teachers, tch)
+	}
+
+	return teachers, nil
+}
