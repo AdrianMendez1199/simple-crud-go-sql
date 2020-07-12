@@ -11,7 +11,7 @@
  
 
  ## Endpoints
- - /student POST 
+ - /student POST ***Request:***
  ```json
  {
     "name": "username",
@@ -19,7 +19,15 @@
     "active": true
  }
  ```
+***Response:***
+```json
+{
+    "status": "OK",
+    "message": "user created"
+}
+```
 
+----
  - /students GET
   ***response:***
   ---
