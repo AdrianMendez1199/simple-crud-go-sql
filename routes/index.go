@@ -10,6 +10,11 @@ type API struct {
 	router http.Handler
 }
 
+type Response struct {
+	Status  string `json:"status"`
+	Message string `json:"message"`
+}
+
 type Server interface {
 	Router() http.Handler
 }

@@ -10,19 +10,16 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type Response struct {
-	Status  string `json:"status"`
-	Message string `json:"message"`
-}
-
 var res = &Response{}
-var s models.Student
+
+// struct Student
+var studentRepo models.Student
 
 // create user into db
 func (a *API) CreateStudent(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 
-	err := decoder.Decode(&s)
+	err := decoder.Decode(&studentRepo)
 
 	w.Header().Set("Content-Type", "application/json")
 
@@ -32,7 +29,7 @@ func (a *API) CreateStudent(w http.ResponseWriter, r *http.Request) {
 		// panic(err)
 	} else {
 		// Create student in DB
-		err = repository.CreateStudent(s)
+		err = repository.CreateStudent(studentRepo)
 
 		if err != nil {
 			log.Fatal(err)
@@ -46,15 +43,15 @@ func (a *API) CreateStudent(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *API) GetStudents(w http.ResponseWriter, r *http.Request) {
-	response, err := repository.GetStudents()
+	studentRepo, err := repository.GetStudents()
 
 	w.Header().Set("Content-Type", "application/json")
 
 	if err != nil {
 		res = &Response{Status: "NOK", Message: "error testing"}
-		json.NewEncoder(w).Encode(res)
+		json.NewEncoder(w).Encode(studentRepo)
 	} else {
-		json.NewEncoder(w).Encode(response)
+		json.NewEncoder(w).Encode(studentRepo)
 	}
 }
 
@@ -63,14 +60,14 @@ func (a *API) GetStudentById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	response, err := repository.GetUserById(id)
+	studentRepo, err := repository.GetUserById(id)
 	w.Header().Set("Content-Type", "application/json")
 
 	if err != nil {
 		res = &Response{Status: "NOK", Message: "error testing"}
 		json.NewEncoder(w).Encode(res)
 	} else {
-		json.NewEncoder(w).Encode(response)
+		json.NewEncoder(w).Encode(studentRepo)
 	}
 
 }
