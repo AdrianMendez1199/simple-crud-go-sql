@@ -51,6 +51,7 @@ func New() Server {
 
 	// Routes Teacher
 	r.HandleFunc("/teacher", a.createTeacher).Methods(http.MethodPost)
+	r.HandleFunc("/teacher/{id}", a.getTeacherById).Methods(http.MethodGet)
 	a.router = r
 	return a
 }
