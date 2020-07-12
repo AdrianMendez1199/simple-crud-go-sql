@@ -3,11 +3,13 @@ package routes
 import (
 	"net/http"
 
+	"github.com/AdrianMendez1199/simple-crud-go-sql/repository"
 	"github.com/gorilla/mux"
 )
 
 type API struct {
-	router http.Handler
+	router   http.Handler
+	userRepo *repository.Student
 }
 
 type Response struct {
@@ -23,8 +25,17 @@ func (a *API) Router() http.Handler {
 	return a.router
 }
 
+func initService() *API {
+	//User Repo
+	u := new(repository.Student)
+
+	return &API{userRepo: u}
+}
+
 func New() Server {
+
 	a := &API{}
+	initService()
 
 	r := mux.NewRouter()
 

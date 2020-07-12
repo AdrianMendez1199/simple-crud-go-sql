@@ -5,21 +5,16 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/AdrianMendez1199/simple-crud-go-sql/models"
-	"github.com/AdrianMendez1199/simple-crud-go-sql/repository"
 	"github.com/gorilla/mux"
 )
 
 var res = &Response{}
 
-// struct Student
-var studentRepo models.Student
-
 // create user into db
 func (a *API) CreateStudent(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 
-	err := decoder.Decode(&studentRepo)
+	err := decoder.Decode(&a.userRepo)
 
 	w.Header().Set("Content-Type", "application/json")
 
@@ -29,7 +24,7 @@ func (a *API) CreateStudent(w http.ResponseWriter, r *http.Request) {
 		// panic(err)
 	} else {
 		// Create student in DB
-		err = repository.CreateStudent(studentRepo)
+		err = a.userRepo.CreateStudent(a.userRepo)
 
 		if err != nil {
 			log.Fatal(err)
@@ -43,7 +38,7 @@ func (a *API) CreateStudent(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *API) GetStudents(w http.ResponseWriter, r *http.Request) {
-	studentRepo, err := repository.GetStudents()
+	studentRepo, err := a.userRepo.GetStudents()
 
 	w.Header().Set("Content-Type", "application/json")
 
@@ -60,7 +55,7 @@ func (a *API) GetStudentById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	studentRepo, err := repository.GetUserById(id)
+	studentRepo, err := a.userRepo.GetUserById(id)
 	w.Header().Set("Content-Type", "application/json")
 
 	if err != nil {

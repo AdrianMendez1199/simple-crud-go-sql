@@ -2,14 +2,23 @@ package repository
 
 import (
 	"errors"
+	"time"
 
 	"github.com/AdrianMendez1199/simple-crud-go-sql/database"
-	"github.com/AdrianMendez1199/simple-crud-go-sql/models"
 	"github.com/lib/pq"
 )
 
+type Student struct {
+	ID        int       `json:"id"`
+	Name      string    `json:"name"`
+	Age       int16     `json:"age"`
+	Active    bool      `json:"active"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+}
+
 // this function create student into database
-func CreateStudent(s models.Student) error {
+func (st *Student) CreateStudent(s *Student) error {
 	query := `INSERT INTO studens (name, age, active)
 						VALUES($1, $2, $3)`
 
@@ -41,12 +50,12 @@ func CreateStudent(s models.Student) error {
 }
 
 // This function return all user into db
-func GetStudents() ([]models.Student, error) {
+func (s *Student) GetStudents() ([]Student, error) {
 	query := `SELECT id, name, age, active
 						FROM studens`
 
 	// Slice studens
-	var students []models.Student
+	var students []Student
 
 	db := database.GetConnection()
 	defer db.Close()
@@ -60,7 +69,7 @@ func GetStudents() ([]models.Student, error) {
 
 	for rows.Next() {
 
-		s := models.Student{}
+		s := Student{}
 
 		err := rows.Scan(
 			&s.ID,
@@ -78,11 +87,11 @@ func GetStudents() ([]models.Student, error) {
 	return students, nil
 }
 
-func GetUserById(id string) (models.Student, error) {
+func (s *Student) GetUserById(id string) (Student, error) {
 	query := `SELECT name, age, active, create_at, update_at
 						FROM studens WHERE id = $1`
 
-	student := models.Student{}
+	student := Student{}
 
 	timeNull := pq.NullTime{}
 
