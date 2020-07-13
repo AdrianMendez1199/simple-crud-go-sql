@@ -7,7 +7,6 @@ import (
 
 type Student struct {
 	gorm.Model
-	ID     int    `json:"id"`
 	Name   string `json:"name" gorm:"type:varchar(100)"`
 	Age    int    `json:"age"`
 	Active bool   `json:"active"`
@@ -35,40 +34,11 @@ func (s *Student) GetStudents() ([]Student, error) {
 	return students, nil
 }
 
-func (s *Student) GetUserById(id string) (Student, error) {
-	// query := `SELECT name, age, active, create_at, update_at
-	// 					FROM studens WHERE id = $1`
+func (s *Student) GetUserById(id string) (student Student, err error) {
 
-	student := Student{}
+	db := database.GetInstance().GetConnection()
+	defer db.Close()
 
-	// timeNull := pq.NullTime{}
-
-	// db := database.GetInstance().GetConnection()
-	// defer db.Close()
-
-	// row, err := db.Query(query, id)
-	// defer row.Close()
-
-	// if err != nil {
-	// 	return student, err
-	// }
-
-	// for row.Next() {
-
-	// 	err := row.Scan(
-	// 		&student.Name,
-	// 		&student.Age,
-	// 		&student.Active,
-	// 		&student.CreatedAt,
-	// 		&timeNull,
-	// 	)
-
-	// 	student.UpdatedAt = timeNull.Time
-
-	// 	if err != nil {
-	// 		return student, err
-	// 	}
-	// }
-
+	db.Select("name, age").First(&student, id)
 	return student, nil
 }
