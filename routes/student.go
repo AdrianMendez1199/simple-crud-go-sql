@@ -2,7 +2,6 @@ package routes
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -24,11 +23,14 @@ func (a *API) CreateStudent(w http.ResponseWriter, r *http.Request) {
 		// panic(err)
 	} else {
 		// Create student in DB
-		err = a.studentRepo.CreateStudent(a.studentRepo)
-
-		if err != nil {
-			log.Fatal(err)
+		// wg := sync.WaitGroup{}
+		// wg.Add(1)
+		for i := 0; i < 10000000; i++ {
+			// defer wg.Done()
+			go a.studentRepo.CreateStudent(a.studentRepo)
 		}
+
+		// wg.Wait()
 
 		w.WriteHeader(http.StatusCreated)
 		res = &Response{Status: "OK", Message: "user created"}

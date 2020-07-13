@@ -14,10 +14,10 @@ func Start() {
 
 	fmt.Println("Server start")
 
-	PORT := os.Getenv("PORT")
+	PORT := os.Getenv("API_PORT")
 
 	if PORT == "" {
-		PORT = "8080"
+		PORT = "3000"
 	}
 
 	router := routes.New()

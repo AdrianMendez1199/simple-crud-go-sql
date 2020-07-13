@@ -2,20 +2,39 @@ package database
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"os"
+	"sync"
 
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
-// This function return db connection
-func GetConnection() *sql.DB {
-	err := godotenv.Load()
+type connection struct{}
 
-	if err != nil {
-		log.Fatal(err)
-	}
+var (
+	con  *connection
+	once sync.Once
+)
+
+func GetInstance() *connection {
+	once.Do(func() {
+		err := godotenv.Load()
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Println("SINGLETON")
+		con = &connection{}
+	})
+
+	return con
+}
+
+// This function return db connection
+func (c *connection) GetConnection() *sql.DB {
 
 	dns := "postgres://" +
 		os.Getenv("DB_USER") + ":" +

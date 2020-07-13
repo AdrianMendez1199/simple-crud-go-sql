@@ -17,13 +17,11 @@ type Teacher struct {
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
-// var db  = database.GetConnection()
-
 func (tc *Teacher) CreateTeacher(t *Teacher) error {
 	query := `INSERT INTO teacher(name, lastname, age, bio)
 						VALUES($1, $2, $3, $4)`
 
-	db := database.GetConnection()
+	db := database.GetInstance().GetConnection()
 	defer db.Close()
 
 	stmt, err := db.Prepare(query)
@@ -53,7 +51,8 @@ func (tc *Teacher) GetTeacherById(id string) (*Teacher, error) {
 	query := `SELECT name, lastname, age
 					 FROM teacher
 					 WHERE id = $1`
-	db := database.GetConnection()
+
+	db := database.GetInstance().GetConnection()
 	defer db.Close()
 
 	t := Teacher{}
@@ -88,7 +87,7 @@ func (tc *Teacher) GetTeachers() ([]Teacher, error) {
 
 	var teachers []Teacher
 
-	db := database.GetConnection()
+	db := database.GetInstance().GetConnection()
 	defer db.Close()
 
 	rows, err := db.Query(query)

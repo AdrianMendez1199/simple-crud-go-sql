@@ -22,7 +22,7 @@ func (st *Student) CreateStudent(s *Student) error {
 	query := `INSERT INTO studens (name, age, active)
 						VALUES($1, $2, $3)`
 
-	db := database.GetConnection()
+	db := database.GetInstance().GetConnection()
 	defer db.Close()
 
 	stmt, err := db.Prepare(query)
@@ -57,7 +57,7 @@ func (s *Student) GetStudents() ([]Student, error) {
 	// Slice studens
 	var students []Student
 
-	db := database.GetConnection()
+	db := database.GetInstance().GetConnection()
 	defer db.Close()
 
 	rows, err := db.Query(query)
@@ -95,7 +95,7 @@ func (s *Student) GetUserById(id string) (Student, error) {
 
 	timeNull := pq.NullTime{}
 
-	db := database.GetConnection()
+	db := database.GetInstance().GetConnection()
 	defer db.Close()
 
 	row, err := db.Query(query, id)
