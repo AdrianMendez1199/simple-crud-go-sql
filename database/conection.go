@@ -2,7 +2,6 @@ package database
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"os"
 	"sync"
@@ -18,7 +17,9 @@ var (
 	once sync.Once
 )
 
+// Singleton
 func GetInstance() *connection {
+	// 1 intance form stuct connection
 	once.Do(func() {
 		err := godotenv.Load()
 
@@ -26,7 +27,6 @@ func GetInstance() *connection {
 			log.Fatal(err)
 		}
 
-		fmt.Println("SINGLETON")
 		con = &connection{}
 	})
 
