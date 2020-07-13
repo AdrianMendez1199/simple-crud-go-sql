@@ -21,7 +21,7 @@ func (a *API) createTeacher(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	err = a.teacherRepo.CreateTeacher(a.teacherRepo)
+	err = a.teacherRepo.CreateTeacher(*a.teacherRepo)
 
 	if err != nil {
 		log.Fatal(err)
