@@ -1,11 +1,11 @@
 package database
 
 import (
-	"database/sql"
 	"log"
 	"os"
 	"sync"
 
+	"github.com/jinzhu/gorm"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
@@ -34,7 +34,7 @@ func GetInstance() *connection {
 }
 
 // This function return db connection
-func (c *connection) GetConnection() *sql.DB {
+func (c *connection) GetConnection() *gorm.DB {
 
 	dns := "postgres://" +
 		os.Getenv("DB_USER") + ":" +
@@ -43,10 +43,10 @@ func (c *connection) GetConnection() *sql.DB {
 		os.Getenv("DB_PORT") + "/" +
 		os.Getenv("BD_NAME") + "?sslmode=disable"
 
-	db, err := sql.Open("postgres", dns)
+	db, err := gorm.Open("postgres", dns)
 
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	return db

@@ -2,6 +2,7 @@ package routes
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -13,6 +14,7 @@ var res = &Response{}
 func (a *API) CreateStudent(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 
+	fmt.Println(a.studentRepo)
 	err := decoder.Decode(&a.studentRepo)
 
 	w.Header().Set("Content-Type", "application/json")
@@ -25,10 +27,10 @@ func (a *API) CreateStudent(w http.ResponseWriter, r *http.Request) {
 		// Create student in DB
 		// wg := sync.WaitGroup{}
 		// wg.Add(1)
-		for i := 0; i < 10000000; i++ {
-			// defer wg.Done()
-			go a.studentRepo.CreateStudent(a.studentRepo)
-		}
+		// for i := 0; i < 10000000; i++ {
+		// defer wg.Done()
+		a.studentRepo.CreateStudent(a.studentRepo)
+		// }
 
 		// wg.Wait()
 
