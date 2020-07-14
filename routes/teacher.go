@@ -8,7 +8,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// this function call repository to create teacher
 func (a *API) createTeacher(w http.ResponseWriter, r *http.Request) {
 
 	decoder := json.NewDecoder(r.Body)

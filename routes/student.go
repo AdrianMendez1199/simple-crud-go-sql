@@ -10,7 +10,6 @@ import (
 
 var res = &Response{}
 
-// create user into db
 func (a *API) createStudent(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 

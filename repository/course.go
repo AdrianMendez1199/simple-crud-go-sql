@@ -15,7 +15,7 @@ type Course struct {
 	Teacher     Teacher `json:"teacher,omitempty" gorm:"foreignkey:TeacherID"`
 }
 
-// This function create course in database
+// CreateCourse creates course in database
 func (c *Course) CreateCourse(co *Course) error {
 	db := database.GetInstance().GetConnection()
 	defer db.Close()
@@ -29,7 +29,7 @@ func (c *Course) CreateCourse(co *Course) error {
 	return nil
 }
 
-// Returns a course, based on the id passed by paramtro
+// GetCouseByID return a course, based on the id passed by paramtro
 func (c *Course) GetCouseByID(id string) (Course, error) {
 	db := database.GetInstance().GetConnection()
 	defer db.Close()
@@ -46,7 +46,7 @@ func (c *Course) GetCouseByID(id string) (Course, error) {
 	return co, nil
 }
 
-// returns all courses that are active
+// GetAllCourses return all courses that are active
 func (c *Course) GetAllCourses() ([]Course, error) {
 	db := database.GetInstance().GetConnection()
 	defer db.Close()

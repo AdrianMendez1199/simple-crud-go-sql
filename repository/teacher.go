@@ -2,7 +2,7 @@ package repository
 
 import "github.com/AdrianMendez1199/simple-crud-go-sql/database"
 
-// Represent Teacher and inherit from base Model
+// Teacher Represent and inherit from base Model
 type Teacher struct {
 	//inheriting from the base model
 	Model
@@ -14,7 +14,7 @@ type Teacher struct {
 	Active   bool   `json:"active,omitempty"`
 }
 
-// This function creates teacher in db, return err if not ok
+// CreateTeacher creates teacher in db, return err if not ok
 func (tc *Teacher) CreateTeacher(t Teacher) error {
 
 	db := database.GetInstance().GetConnection()
@@ -28,7 +28,7 @@ func (tc *Teacher) CreateTeacher(t Teacher) error {
 	return nil
 }
 
-// Return teacher based on the id provided
+// GetTeacherByID Return teacher based on the id provided
 func (tc *Teacher) GetTeacherByID(id string) (Teacher, error) {
 	db := database.GetInstance().GetConnection()
 	defer db.Close()
@@ -42,7 +42,7 @@ func (tc *Teacher) GetTeacherByID(id string) (Teacher, error) {
 	return t, nil
 }
 
-// Return all teacher with state active
+// GetTeachers Return all teacher with state active
 func (tc *Teacher) GetTeachers() ([]Teacher, error) {
 
 	db := database.GetInstance().GetConnection()

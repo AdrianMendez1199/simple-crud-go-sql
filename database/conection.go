@@ -17,7 +17,7 @@ var (
 	once sync.Once
 )
 
-// Return only intence from connection
+// GetInstance Return only intence from connection
 func GetInstance() *connection {
 	// 1 intance form stuct connection
 	once.Do(func() {
@@ -33,7 +33,7 @@ func GetInstance() *connection {
 	return con
 }
 
-// This function return db connection
+// GetConnection return db connection
 func (c *connection) GetConnection() *gorm.DB {
 
 	dns := "postgres://" +
