@@ -11,6 +11,7 @@ type API struct {
 	router      http.Handler
 	studentRepo *repository.Student
 	teacherRepo *repository.Teacher
+	courseRepo  *repository.Course
 }
 
 type Response struct {
@@ -30,10 +31,12 @@ func initServices() *API {
 	//User Repo
 	u := new(repository.Student)
 	t := new(repository.Teacher)
+	c := new(repository.Course)
 
 	return &API{
 		studentRepo: u,
 		teacherRepo: t,
+		courseRepo:  c,
 	}
 }
 
@@ -53,6 +56,10 @@ func New() Server {
 	r.HandleFunc("/teacher", a.createTeacher).Methods(http.MethodPost)
 	r.HandleFunc("/teacher/{id}", a.getTeacherById).Methods(http.MethodGet)
 	r.HandleFunc("/teachers", a.getTeachers).Methods(http.MethodGet)
+
+	//Course Student
+	r.HandleFunc("/course", a.createCourse).Methods(http.MethodPost)
+
 	a.router = r
 	return a
 }

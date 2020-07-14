@@ -2,7 +2,6 @@ package routes
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -15,7 +14,6 @@ var res = &Response{}
 func (a *API) CreateStudent(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 
-	fmt.Println(a.studentRepo)
 	err := decoder.Decode(&a.studentRepo)
 
 	w.Header().Set("Content-Type", "application/json")
