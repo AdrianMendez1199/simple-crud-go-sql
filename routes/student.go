@@ -2,7 +2,7 @@ package routes
 
 import (
 	"encoding/json"
-	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -14,44 +14,50 @@ var res = &Response{}
 func (a *API) CreateStudent(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 
-	fmt.Println(a.studentRepo)
 	err := decoder.Decode(&a.studentRepo)
 
 	w.Header().Set("Content-Type", "application/json")
 
 	if err != nil {
-		res = &Response{Status: "NOK", Message: "Error creating user"}
-		json.NewEncoder(w).Encode(res)
-		// panic(err)
-	} else {
-		// Create student in DB
-		// wg := sync.WaitGroup{}
-		// wg.Add(1)
-		// for i := 0; i < 10000000; i++ {
-		// defer wg.Done()
-		a.studentRepo.CreateStudent(a.studentRepo)
-		// }
 
-		// wg.Wait()
+		w.WriteHeader(http.StatusInternalServerError)
+
+		json.NewEncoder(w).Encode(&Response{
+			Status:  "NOK",
+			Message: "Error creating user",
+		})
+
+	} else {
+
+		a.studentRepo.CreateStudent(a.studentRepo)
 
 		w.WriteHeader(http.StatusCreated)
-		res = &Response{Status: "OK", Message: "user created"}
-		json.NewEncoder(w).Encode(res)
+
+		json.NewEncoder(w).Encode(&Response{
+			Status: "OK", Message: "user created",
+		})
+
 	}
 
 }
 
 func (a *API) GetStudents(w http.ResponseWriter, r *http.Request) {
 	studentRepo, err := a.studentRepo.GetStudents()
-
 	w.Header().Set("Content-Type", "application/json")
 
 	if err != nil {
-		res = &Response{Status: "NOK", Message: "error testing"}
-		json.NewEncoder(w).Encode(studentRepo)
-	} else {
-		json.NewEncoder(w).Encode(studentRepo)
+
+		w.WriteHeader(http.StatusInternalServerError)
+
+		json.NewEncoder(w).Encode(&Response{
+			Status:  "NOK",
+			Message: "an Ocurred Error try later",
+		})
+
 	}
+
+	json.NewEncoder(w).Encode(studentRepo)
+
 }
 
 func (a *API) GetStudentById(w http.ResponseWriter, r *http.Request) {
@@ -59,12 +65,20 @@ func (a *API) GetStudentById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	studentRepo, err := a.studentRepo.GetUserById(id)
+	studentRepo, err := a.studentRepo.GetStudentById(id)
+
 	w.Header().Set("Content-Type", "application/json")
 
 	if err != nil {
-		res = &Response{Status: "NOK", Message: "error testing"}
-		json.NewEncoder(w).Encode(res)
+		log.Println(err)
+
+		w.WriteHeader(http.StatusNotFound)
+
+		json.NewEncoder(w).Encode(Response{
+			Status:  "NOK",
+			Message: "student not found",
+		})
+
 	} else {
 		json.NewEncoder(w).Encode(studentRepo)
 	}

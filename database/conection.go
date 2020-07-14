@@ -45,6 +45,11 @@ func (c *connection) GetConnection() *gorm.DB {
 
 	db, err := gorm.Open("postgres", dns)
 
+	// if app in debug mode show log sql query
+	if os.Getenv("GO_ENV") == "development" {
+		db.LogMode(true)
+	}
+
 	if err != nil {
 		panic(err)
 	}
