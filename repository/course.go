@@ -2,6 +2,7 @@ package repository
 
 import "github.com/AdrianMendez1199/simple-crud-go-sql/database"
 
+// Course model extends from base Model
 type Course struct {
 	// Base model
 	Model
@@ -10,10 +11,11 @@ type Course struct {
 	Description string  `json:"description,omitempty"`
 	Image       string  `json:"imgUrl,omitempty"`
 	Active      bool    `json:"active,omitempty"`
-	TeacherId   uint    `json:"teacherId,omitempty"`
-	Teacher     Teacher `json:"teacher,omitempty" gorm:"foreignkey:TeacherId"`
+	TeacherID   uint    `json:"teacherId,omitempty"`
+	Teacher     Teacher `json:"teacher,omitempty" gorm:"foreignkey:TeacherID"`
 }
 
+// This function create course in database
 func (c *Course) CreateCourse(co *Course) error {
 	db := database.GetInstance().GetConnection()
 	defer db.Close()
@@ -27,7 +29,8 @@ func (c *Course) CreateCourse(co *Course) error {
 	return nil
 }
 
-func (c *Course) GetCouseById(id string) (Course, error) {
+// Returns a course, based on the id passed by paramtro
+func (c *Course) GetCouseByID(id string) (Course, error) {
 	db := database.GetInstance().GetConnection()
 	defer db.Close()
 
@@ -43,6 +46,7 @@ func (c *Course) GetCouseById(id string) (Course, error) {
 	return co, nil
 }
 
+// returns all courses that are active
 func (c *Course) GetAllCourses() ([]Course, error) {
 	db := database.GetInstance().GetConnection()
 	defer db.Close()

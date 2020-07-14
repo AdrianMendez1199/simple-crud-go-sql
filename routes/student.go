@@ -11,7 +11,7 @@ import (
 var res = &Response{}
 
 // create user into db
-func (a *API) CreateStudent(w http.ResponseWriter, r *http.Request) {
+func (a *API) createStudent(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 
 	err := decoder.Decode(&a.studentRepo)
@@ -41,7 +41,7 @@ func (a *API) CreateStudent(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (a *API) GetStudents(w http.ResponseWriter, r *http.Request) {
+func (a *API) getStudents(w http.ResponseWriter, r *http.Request) {
 	studentRepo, err := a.studentRepo.GetStudents()
 	w.Header().Set("Content-Type", "application/json")
 
@@ -60,12 +60,12 @@ func (a *API) GetStudents(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (a *API) GetStudentById(w http.ResponseWriter, r *http.Request) {
+func (a *API) getStudentByID(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	studentRepo, err := a.studentRepo.GetStudentById(id)
+	studentRepo, err := a.studentRepo.GetStudentByID(id)
 
 	w.Header().Set("Content-Type", "application/json")
 
