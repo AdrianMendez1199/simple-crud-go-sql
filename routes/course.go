@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func (a *API) createCourse(w http.ResponseWriter, r *http.Request) {
@@ -33,5 +35,50 @@ func (a *API) createCourse(w http.ResponseWriter, r *http.Request) {
 			Status:  "OK",
 			Message: "Course created",
 		})
+	}
+}
+
+func (a *API) getCourseById(w http.ResponseWriter, r *http.Request) {
+
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	studentRepo, err := a.courseRepo.GetCouseById(id)
+
+	w.Header().Set("Content-Type", "application/json")
+
+	if err != nil {
+		log.Println(err)
+
+		w.WriteHeader(http.StatusNotFound)
+
+		json.NewEncoder(w).Encode(Response{
+			Status:  "NOK",
+			Message: "student not found",
+		})
+
+	} else {
+		json.NewEncoder(w).Encode(studentRepo)
+	}
+
+}
+
+func (a *API) getAllCourses(w http.ResponseWriter, r *http.Request) {
+	courses, err := a.courseRepo.GetAllCourses()
+
+	w.Header().Set("Content-Type", "application/json")
+
+	if err != nil {
+		log.Println(err)
+
+		w.WriteHeader(http.StatusInternalServerError)
+
+		json.NewEncoder(w).Encode(Response{
+			Status:  "NOK",
+			Message: "An Ocurred Error",
+		})
+
+	} else {
+		json.NewEncoder(w).Encode(courses)
 	}
 }
