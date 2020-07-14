@@ -1,11 +1,11 @@
 package repository
 
-import (
-	"github.com/AdrianMendez1199/simple-crud-go-sql/database"
-)
+import "github.com/AdrianMendez1199/simple-crud-go-sql/database"
 
 type Student struct {
+	//inheriting from the base model
 	Model
+
 	Name   string `json:"name"`
 	Age    int    `json:"age"`
 	Active bool   `json:"active"`
