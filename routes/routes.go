@@ -7,7 +7,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// Contains all repository reference and http.Handle
+// API Contains all repository reference and http.Handle
 type API struct {
 	router      http.Handler
 	studentRepo *repository.Student
@@ -15,16 +15,18 @@ type API struct {
 	courseRepo  *repository.Course
 }
 
-// Represent response http
+// Response  Represent response http
 type Response struct {
 	Status  string `json:"status"`
 	Message string `json:"message"`
 }
 
+// Server interfce implements
 type Server interface {
 	Router() http.Handler
 }
 
+// Router return router from API struct
 func (a *API) Router() http.Handler {
 	return a.router
 }
@@ -42,6 +44,7 @@ func initServices() *API {
 	}
 }
 
+// New  handdle http endpoinst
 func New() Server {
 
 	a := &API{}

@@ -2,7 +2,7 @@ package repository
 
 import "github.com/AdrianMendez1199/simple-crud-go-sql/database"
 
-// Represent a Student and inheriting from base Model
+//Student Represent a Student and inheriting from base Model
 type Student struct {
 	//inheriting from the base model
 	Model
@@ -12,7 +12,7 @@ type Student struct {
 	Active bool   `json:"active,omitempty"`
 }
 
-// this function create student into database
+// CreateStudent creates student into database
 func (st *Student) CreateStudent(s *Student) (bool, error) {
 	db := database.GetInstance().GetConnection()
 	defer db.Close()
@@ -26,7 +26,7 @@ func (st *Student) CreateStudent(s *Student) (bool, error) {
 	return true, nil
 }
 
-// This function return all student into db with state A
+// GetStudents return all student into db with state A
 func (st *Student) GetStudents() ([]Student, error) {
 	// Slice studens
 	students := []Student{}
@@ -42,7 +42,7 @@ func (st *Student) GetStudents() ([]Student, error) {
 	return students, nil
 }
 
-// This function return student based on an id
+// GetStudentByID return student based on an id
 func (st *Student) GetStudentByID(id string) (Student, error) {
 
 	db := database.GetInstance().GetConnection()

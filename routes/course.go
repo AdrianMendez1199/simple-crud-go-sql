@@ -12,11 +12,6 @@ func (a *API) createCourse(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(&a.courseRepo)
 
-	// Only for test
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	w.Header().Set("Content-Type", "application/json")
 
 	err = a.courseRepo.CreateCourse(a.courseRepo)
