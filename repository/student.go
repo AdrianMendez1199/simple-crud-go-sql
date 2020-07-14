@@ -2,12 +2,11 @@ package repository
 
 import (
 	"github.com/AdrianMendez1199/simple-crud-go-sql/database"
-	"github.com/jinzhu/gorm"
 )
 
 type Student struct {
-	gorm.Model
-	Name   string `json:"name" gorm:"type:varchar(100)"`
+	Model
+	Name   string `json:"name"`
 	Age    int    `json:"age"`
 	Active bool   `json:"active"`
 }
@@ -29,7 +28,7 @@ func (s *Student) GetStudents() ([]Student, error) {
 	db := database.GetInstance().GetConnection()
 	defer db.Close()
 
-	db.Select("name, age").Find(&students)
+	db.Select("id, name, age").Find(&students)
 
 	return students, nil
 }
@@ -39,6 +38,6 @@ func (s *Student) GetUserById(id string) (student Student, err error) {
 	db := database.GetInstance().GetConnection()
 	defer db.Close()
 
-	db.Select("name, age").First(&student, id)
+	db.Select("id, name, age").First(&student, id)
 	return student, nil
 }
