@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// Contains all repository reference and http.Handle
 type API struct {
 	router      http.Handler
 	studentRepo *repository.Student
@@ -14,6 +15,7 @@ type API struct {
 	courseRepo  *repository.Course
 }
 
+// Represent response http
 type Response struct {
 	Status  string `json:"status"`
 	Message string `json:"message"`
@@ -48,18 +50,18 @@ func New() Server {
 	r := mux.NewRouter()
 
 	// Routes Studens
-	r.HandleFunc("/students", a.CreateStudent).Methods(http.MethodPost)
-	r.HandleFunc("/students", a.GetStudents).Methods(http.MethodGet)
-	r.HandleFunc("/student/{id}", a.GetStudentById).Methods(http.MethodGet)
+	r.HandleFunc("/students", a.createStudent).Methods(http.MethodPost)
+	r.HandleFunc("/students", a.getStudents).Methods(http.MethodGet)
+	r.HandleFunc("/student/{id}", a.getStudentByID).Methods(http.MethodGet)
 
 	// Routes Teacher
 	r.HandleFunc("/teacher", a.createTeacher).Methods(http.MethodPost)
-	r.HandleFunc("/teacher/{id}", a.getTeacherById).Methods(http.MethodGet)
+	r.HandleFunc("/teacher/{id}", a.getTeacherByID).Methods(http.MethodGet)
 	r.HandleFunc("/teachers", a.getTeachers).Methods(http.MethodGet)
 
 	//Course Student
 	r.HandleFunc("/course", a.createCourse).Methods(http.MethodPost)
-	r.HandleFunc("/course/{id}", a.getCourseById).Methods(http.MethodGet)
+	r.HandleFunc("/course/{id}", a.getCourseByID).Methods(http.MethodGet)
 	r.HandleFunc("/courses", a.getAllCourses).Methods(http.MethodGet)
 
 	a.router = r

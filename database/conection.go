@@ -17,7 +17,7 @@ var (
 	once sync.Once
 )
 
-// Singleton
+// Return only intence from connection
 func GetInstance() *connection {
 	// 1 intance form stuct connection
 	once.Do(func() {

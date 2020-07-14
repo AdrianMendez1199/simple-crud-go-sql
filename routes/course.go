@@ -38,12 +38,12 @@ func (a *API) createCourse(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (a *API) getCourseById(w http.ResponseWriter, r *http.Request) {
+func (a *API) getCourseByID(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	studentRepo, err := a.courseRepo.GetCouseById(id)
+	studentRepo, err := a.courseRepo.GetCouseByID(id)
 
 	w.Header().Set("Content-Type", "application/json")
 

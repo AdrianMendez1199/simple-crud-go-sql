@@ -42,12 +42,12 @@ func (a *API) createTeacher(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (a *API) getTeacherById(w http.ResponseWriter, r *http.Request) {
+func (a *API) getTeacherByID(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	id := vars["id"]
 
-	teacher, err := a.teacherRepo.GetTeacherById(id)
+	teacher, err := a.teacherRepo.GetTeacherByID(id)
 
 	w.Header().Set("Content-Type", "application/json")
 
