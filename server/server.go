@@ -10,6 +10,7 @@ import (
 	"github.com/AdrianMendez1199/simple-crud-go-sql/routes"
 )
 
+// Start run http server
 func Start() {
 
 	fmt.Println("Server start")
