@@ -1,5 +1,7 @@
 # Simple Rest Api 
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2cde77c93e034ff6b068bc9ec198f4ea)](https://app.codacy.com/manual/AdrianMendez1199/simple-crud-go-sql?utm_source=github.com&utm_medium=referral&utm_content=AdrianMendez1199/simple-crud-go-sql&utm_campaign=Badge_Grade_Settings)
+
 ## Requirements
  - GO `go version` go version go1.14.3 darwin/amd64 or later
  
