@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/AdrianMendez1199/simple-crud-go-sql/repository"
@@ -26,9 +27,21 @@ type Server interface {
 	Router() http.Handler
 }
 
+// Logging to pattern Decorator testing
+type Logging struct {
+	logger *log.Logger
+	API
+}
+
 // Router return router from API struct
 func (a *API) Router() http.Handler {
 	return a.router
+}
+
+// Router Decorator
+func (l *Logging) Router() http.Handler {
+	log.Println("Testing")
+	return l.router
 }
 
 func initServices() *API {
@@ -47,7 +60,7 @@ func initServices() *API {
 // New  handdle http endpoinst
 func New() Server {
 
-	a := &API{}
+	a := &Logging{}
 	initServices()
 
 	r := mux.NewRouter()
