@@ -38,7 +38,7 @@ func (a *API) Router() http.Handler {
 	return a.router
 }
 
-// Router Decorator
+// Router Decorator teting
 func (l *Logging) Router() http.Handler {
 	log.Println("Testing")
 	return l.router
@@ -46,9 +46,9 @@ func (l *Logging) Router() http.Handler {
 
 func initServices() *API {
 	//User Repo
-	u := new(repository.Student)
-	t := new(repository.Teacher)
-	c := new(repository.Course)
+	u := &repository.Student{}
+	t := &repository.Teacher{}
+	c := &repository.Course{}
 
 	return &API{
 		studentRepo: u,
