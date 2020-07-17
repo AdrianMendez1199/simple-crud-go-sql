@@ -15,12 +15,6 @@ type API struct {
 	courseRepo  *repository.Course
 }
 
-// Response  Represent response http
-type Response struct {
-	Status  string `json:"status"`
-	Message string `json:"message"`
-}
-
 // Server interfce implements
 type Server interface {
 	Router() http.Handler
