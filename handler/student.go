@@ -12,21 +12,21 @@ func (a *API) createStudent(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&a.studentRepo)
 
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(&Response{"NOK", "Bad request"})
+		response := newResponse(Error, "bad structure student", nil)
+		responseJSON(w, http.StatusBadRequest, response)
 		return
 	}
 
 	_, err = a.studentRepo.CreateStudent(a.studentRepo)
 
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(&Response{"NOK", "error creating user"})
+		response := newResponse(Error, "An ocurred error creating students", nil)
+		responseJSON(w, http.StatusInternalServerError, response)
 		return
 	}
 
-	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(&Response{"OK", "user created"})
+	response := newResponse(Message, "student created", nil)
+	responseJSON(w, http.StatusCreated, response)
 
 }
 
@@ -35,12 +35,13 @@ func (a *API) getStudents(w http.ResponseWriter, r *http.Request) {
 	students, err := a.studentRepo.GetStudents()
 
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(&Response{"NOK", "an Ocurred Error try later"})
+		response := newResponse(Error, "Internal Server Error", nil)
+		responseJSON(w, http.StatusInternalServerError, response)
 		return
 	}
 
-	json.NewEncoder(w).Encode(students)
+	response := newResponse(Error, "OK", students)
+	responseJSON(w, http.StatusOK, response)
 
 }
 
@@ -52,10 +53,12 @@ func (a *API) getStudentByID(w http.ResponseWriter, r *http.Request) {
 	student, err := a.studentRepo.GetStudentByID(id)
 
 	if err != nil {
-		w.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(w).Encode(&Response{"NOK", "student not found"})
+		response := newResponse(Error, "student not found", nil)
+		responseJSON(w, http.StatusNotFound, response)
 		return
 	}
-	json.NewEncoder(w).Encode(student)
+
+	response := newResponse(Error, "OK", student)
+	responseJSON(w, http.StatusOK, response)
 
 }
