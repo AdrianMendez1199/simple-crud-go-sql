@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/AdrianMendez1199/simple-crud-go-sql/routes"
+	"github.com/AdrianMendez1199/simple-crud-go-sql/handler"
 )
 
 // Start run http server
@@ -21,7 +21,7 @@ func Start() {
 		PORT = "3000"
 	}
 
-	router := routes.New()
+	router := handler.New()
 
 	s := &http.Server{
 		Addr:         ":" + PORT,

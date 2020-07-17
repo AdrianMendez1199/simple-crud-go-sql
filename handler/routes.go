@@ -1,4 +1,4 @@
-package routes
+package handler
 
 import (
 	"net/http"
@@ -63,12 +63,12 @@ func New() Server {
 
 	r := mux.NewRouter()
 
-	// Routes Studens
+	// handler Studens
 	r.HandleFunc("/students", a.createStudent).Methods(http.MethodPost)
 	r.HandleFunc("/students", a.getStudents).Methods(http.MethodGet)
 	r.HandleFunc("/student/{id}", a.getStudentByID).Methods(http.MethodGet)
 
-	// Routes Teacher
+	// handler Teacher
 	r.HandleFunc("/teacher", a.createTeacher).Methods(http.MethodPost)
 	r.HandleFunc("/teacher/{id}", a.getTeacherByID).Methods(http.MethodGet)
 	r.HandleFunc("/teachers", a.getTeachers).Methods(http.MethodGet)
