@@ -19,8 +19,6 @@ func (a *API) createStudent(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 
-		w.WriteHeader(http.StatusInternalServerError)
-
 		json.NewEncoder(w).Encode(&Response{
 			Status:  "NOK",
 			Message: "Error creating user",
@@ -42,10 +40,8 @@ func (a *API) createStudent(w http.ResponseWriter, r *http.Request) {
 
 func (a *API) getStudents(w http.ResponseWriter, r *http.Request) {
 	studentRepo, err := a.studentRepo.GetStudents()
-	w.Header().Set("Content-Type", "application/json")
 
 	if err != nil {
-
 		w.WriteHeader(http.StatusInternalServerError)
 
 		json.NewEncoder(w).Encode(&Response{
@@ -65,8 +61,6 @@ func (a *API) getStudentByID(w http.ResponseWriter, r *http.Request) {
 	id := vars["id"]
 
 	studentRepo, err := a.studentRepo.GetStudentByID(id)
-
-	w.Header().Set("Content-Type", "application/json")
 
 	if err != nil {
 		log.Println(err)
