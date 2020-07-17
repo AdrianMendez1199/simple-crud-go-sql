@@ -30,5 +30,8 @@ func Start() {
 		WriteTimeout: 10 * time.Second,
 	}
 
-	log.Fatal(s.ListenAndServe())
+	err := s.ListenAndServe()
+	if err != nil {
+		log.Println(err)
+	}
 }

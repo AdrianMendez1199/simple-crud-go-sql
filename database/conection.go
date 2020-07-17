@@ -7,6 +7,8 @@ import (
 
 	"github.com/jinzhu/gorm"
 	"github.com/joho/godotenv"
+
+	// Postgres Driver
 	_ "github.com/lib/pq"
 )
 
@@ -51,7 +53,7 @@ func (c *connection) GetConnection() *gorm.DB {
 	}
 
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	return db
