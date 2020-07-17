@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -10,24 +9,25 @@ import (
 
 func (a *API) createCourse(w http.ResponseWriter, r *http.Request) {
 
-	decoder := json.NewDecoder(r.Body)
-	err := decoder.Decode(&a.courseRepo)
+	err := json.NewDecoder(r.Body).Decode(&a.courseRepo)
 
 	if err != nil {
-
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(&Response{"NOK", "Bad Request"})
-
-	} else {
-		err = a.courseRepo.CreateCourse(a.courseRepo)
-
-		if err != nil {
-			json.NewEncoder(w).Encode(&Response{"NOK", "Error creating course"})
-		} else {
-			w.WriteHeader(http.StatusCreated)
-			json.NewEncoder(w).Encode(&Response{"OK", "Course created"})
-		}
+		response := newResponse(Error, "Bad Request", nil)
+		responseJSON(w, http.StatusBadRequest, response)
+		return
 	}
+
+	err = a.courseRepo.CreateCourse(a.courseRepo)
+
+	if err != nil {
+		response := newResponse(Error, "error creating course", nil)
+		responseJSON(w, http.StatusInternalServerError, response)
+		return
+	}
+
+	response := newResponse(Message, "Course creates", nil)
+	responseJSON(w, http.StatusCreated, response)
+
 }
 
 func (a *API) getCourseByID(w http.ResponseWriter, r *http.Request) {
@@ -38,14 +38,13 @@ func (a *API) getCourseByID(w http.ResponseWriter, r *http.Request) {
 	course, err := a.courseRepo.GetCouseByID(id)
 
 	if err != nil {
-		log.Println(err)
-
-		w.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(w).Encode(&Response{"NOK", "student not found"})
-
-	} else {
-		json.NewEncoder(w).Encode(course)
+		response := newResponse(Error, "error creating course", nil)
+		responseJSON(w, http.StatusNotFound, response)
+		return
 	}
+
+	response := newResponse(Error, "OK", course)
+	responseJSON(w, http.StatusOK, response)
 
 }
 
@@ -53,12 +52,11 @@ func (a *API) getAllCourses(w http.ResponseWriter, r *http.Request) {
 	courses, err := a.courseRepo.GetAllCourses()
 
 	if err != nil {
-		log.Println(err)
-
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(Response{"NOK", "An Ocurred Error"})
-
-	} else {
-		json.NewEncoder(w).Encode(courses)
+		response := newResponse(Error, "Internal Server Error", nil)
+		responseJSON(w, http.StatusInternalServerError, response)
+		return
 	}
+
+	response := newResponse(Message, "OK", courses)
+	responseJSON(w, http.StatusOK, response)
 }
