@@ -12,8 +12,6 @@ func (a *API) createCourse(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(&a.courseRepo)
 
-	w.Header().Set("Content-Type", "application/json")
-
 	err = a.courseRepo.CreateCourse(a.courseRepo)
 
 	if err != nil {
@@ -40,8 +38,6 @@ func (a *API) getCourseByID(w http.ResponseWriter, r *http.Request) {
 
 	studentRepo, err := a.courseRepo.GetCouseByID(id)
 
-	w.Header().Set("Content-Type", "application/json")
-
 	if err != nil {
 		log.Println(err)
 
@@ -60,8 +56,6 @@ func (a *API) getCourseByID(w http.ResponseWriter, r *http.Request) {
 
 func (a *API) getAllCourses(w http.ResponseWriter, r *http.Request) {
 	courses, err := a.courseRepo.GetAllCourses()
-
-	w.Header().Set("Content-Type", "application/json")
 
 	if err != nil {
 		log.Println(err)

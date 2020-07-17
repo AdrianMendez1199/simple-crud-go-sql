@@ -14,8 +14,6 @@ func (a *API) createTeacher(w http.ResponseWriter, r *http.Request) {
 
 	err := decoder.Decode(&a.teacherRepo)
 
-	w.Header().Set("Content-Type", "application/json")
-
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -25,6 +23,7 @@ func (a *API) createTeacher(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 
 		w.WriteHeader(http.StatusInternalServerError)
+
 		json.NewEncoder(w).Encode(&Response{
 			Status:  "NOK",
 			Message: "Error creating teacher",
@@ -48,8 +47,6 @@ func (a *API) getTeacherByID(w http.ResponseWriter, r *http.Request) {
 
 	teacher, err := a.teacherRepo.GetTeacherByID(id)
 
-	w.Header().Set("Content-Type", "application/json")
-
 	if err != nil {
 
 		w.WriteHeader(http.StatusNotFound)
@@ -67,8 +64,6 @@ func (a *API) getTeacherByID(w http.ResponseWriter, r *http.Request) {
 func (a *API) getTeachers(w http.ResponseWriter, r *http.Request) {
 
 	teachers, err := a.teacherRepo.GetTeachers()
-
-	w.Header().Set("Content-Type", "application/json")
 
 	if err != nil {
 
