@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -10,29 +9,22 @@ import (
 
 func (a *API) createTeacher(w http.ResponseWriter, r *http.Request) {
 
-	decoder := json.NewDecoder(r.Body)
-
-	err := decoder.Decode(&a.teacherRepo)
+	err := json.NewDecoder(r.Body).Decode(&a.teacherRepo)
 
 	if err != nil {
-		log.Fatal(err)
+		return
 	}
 
 	err = a.teacherRepo.CreateTeacher(*a.teacherRepo)
-
-	rs := &Response{"OK", "Teacher create"}
+	rs := &Response{"OK", "Teacher creates"}
 
 	if err != nil {
-
 		w.WriteHeader(http.StatusInternalServerError)
 		rs = &Response{"NOK", "Error creating teacher"}
-
-	} else {
-
-		w.WriteHeader(http.StatusCreated)
-
+		return
 	}
 
+	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(&rs)
 
 }
@@ -45,14 +37,12 @@ func (a *API) getTeacherByID(w http.ResponseWriter, r *http.Request) {
 	teacher, err := a.teacherRepo.GetTeacherByID(id)
 
 	if err != nil {
-
 		w.WriteHeader(http.StatusNotFound)
-
 		json.NewEncoder(w).Encode(&Response{"NOK", "Teacher not found"})
-	} else {
-
-		json.NewEncoder(w).Encode(&teacher)
+		return
 	}
+
+	json.NewEncoder(w).Encode(&teacher)
 
 }
 
@@ -61,12 +51,11 @@ func (a *API) getTeachers(w http.ResponseWriter, r *http.Request) {
 	teachers, err := a.teacherRepo.GetTeachers()
 
 	if err != nil {
-
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(&Response{"NOK", "Error creating teacher"})
-
-	} else {
-		json.NewEncoder(w).Encode(&teachers)
+		return
 	}
+
+	json.NewEncoder(w).Encode(&teachers)
 
 }
