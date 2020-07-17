@@ -8,50 +8,46 @@ import (
 	"github.com/gorilla/mux"
 )
 
-var res = &Response{}
-
 func (a *API) createStudent(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 
 	err := decoder.Decode(&a.studentRepo)
 
-	w.Header().Set("Content-Type", "application/json")
-
 	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
 
-		json.NewEncoder(w).Encode(&Response{
-			Status:  "NOK",
-			Message: "Error creating user",
-		})
+		json.NewEncoder(w).Encode(&Response{"NOK", "Bad request"})
 
 	} else {
 
-		a.studentRepo.CreateStudent(a.studentRepo)
+		_, err := a.studentRepo.CreateStudent(a.studentRepo)
 
-		w.WriteHeader(http.StatusCreated)
+		if err != nil {
 
-		json.NewEncoder(w).Encode(&Response{
-			Status: "OK", Message: "user created",
-		})
+			w.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(w).Encode(&Response{"NOK", "error creating user"})
 
+		} else {
+
+			w.WriteHeader(http.StatusCreated)
+			json.NewEncoder(w).Encode(&Response{"OK", "user created"})
+
+		}
 	}
 
 }
 
 func (a *API) getStudents(w http.ResponseWriter, r *http.Request) {
-	studentRepo, err := a.studentRepo.GetStudents()
+
+	students, err := a.studentRepo.GetStudents()
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-
-		json.NewEncoder(w).Encode(&Response{
-			Status:  "NOK",
-			Message: "an Ocurred Error try later",
-		})
-
+		json.NewEncoder(w).Encode(&Response{"NOK", "an Ocurred Error try later"})
+		log.Println("error", err)
+	} else {
+		json.NewEncoder(w).Encode(students)
 	}
-
-	json.NewEncoder(w).Encode(studentRepo)
 
 }
 
@@ -60,20 +56,17 @@ func (a *API) getStudentByID(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	studentRepo, err := a.studentRepo.GetStudentByID(id)
+	student, err := a.studentRepo.GetStudentByID(id)
 
 	if err != nil {
-		log.Println(err)
-
 		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(&Response{"NOK", "student not found"})
 
-		json.NewEncoder(w).Encode(Response{
-			Status:  "NOK",
-			Message: "student not found",
-		})
-
+		log.Println(err)
 	} else {
-		json.NewEncoder(w).Encode(studentRepo)
+
+		json.NewEncoder(w).Encode(student)
+
 	}
 
 }
