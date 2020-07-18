@@ -1,6 +1,11 @@
 package repository
 
-import "github.com/AdrianMendez1199/simple-crud-go-sql/database"
+import (
+	"fmt"
+	"strings"
+
+	"github.com/AdrianMendez1199/simple-crud-go-sql/database"
+)
 
 // Course model extends from base Model
 type Course struct {
@@ -54,6 +59,28 @@ func (c *Course) GetAllCourses() ([]Course, error) {
 	courses := []Course{}
 
 	err := db.Preload("Teacher", "active = ?", true).
+		Find(&courses)
+
+	if err != nil {
+		return courses, err.Error
+	}
+
+	return courses, nil
+}
+
+// SearchCourse return courses
+func (c *Course) SearchCourse(search string) ([]Course, error) {
+	courses := []Course{}
+
+	db := database.GetInstance().GetConnection()
+	defer db.Close()
+
+	search = strings.ToLower(search)
+
+	fmt.Println(search)
+
+	err := db.Where("lower(title) LIKE ? AND active = ?", "%"+search+"%", true).
+		Preload("Teacher", "active = ?", true).
 		Find(&courses)
 
 	if err != nil {

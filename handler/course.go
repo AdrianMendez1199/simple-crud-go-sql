@@ -60,3 +60,26 @@ func (a *API) getAllCourses(w http.ResponseWriter, r *http.Request) {
 	response := newResponse(Message, "OK", courses)
 	responseJSON(w, http.StatusOK, response)
 }
+
+func (a *API) searchCourse(w http.ResponseWriter, r *http.Request) {
+
+	keys, ok := r.URL.Query()["search"]
+
+	if !ok {
+		response := newResponse(Error, "Search param is not provider", nil)
+		responseJSON(w, http.StatusBadRequest, response)
+		return
+	}
+
+	courses, err := a.courseRepo.SearchCourse(keys[0])
+
+	if err != nil {
+		response := newResponse(Error, "course not found", nil)
+		responseJSON(w, http.StatusNotFound, response)
+		return
+	}
+
+	response := newResponse(Message, "OK", courses)
+	responseJSON(w, http.StatusOK, response)
+
+}

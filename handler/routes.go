@@ -59,19 +59,22 @@ func New() Server {
 	r := mux.NewRouter()
 
 	// handler Studens
-	r.HandleFunc("/students", a.createStudent).Methods(http.MethodPost)
-	r.HandleFunc("/students", middleware.WriteLog(a.getStudents)).Methods(http.MethodGet)
-	r.HandleFunc("/student/{id}", a.getStudentByID).Methods(http.MethodGet)
+	r.HandleFunc("/api/v1/students", a.createStudent).Methods(http.MethodPost)
+	r.HandleFunc("/api/v1/students", middleware.WriteLog(a.getStudents)).Methods(http.MethodGet)
+	r.HandleFunc("/api/v1/student/{id}", a.getStudentByID).Methods(http.MethodGet)
 
 	// handler Teacher
-	r.HandleFunc("/teacher", a.createTeacher).Methods(http.MethodPost)
-	r.HandleFunc("/teacher/{id}", a.getTeacherByID).Methods(http.MethodGet)
-	r.HandleFunc("/teachers", a.getTeachers).Methods(http.MethodGet)
+	r.HandleFunc("/api/v1/teacher", a.createTeacher).Methods(http.MethodPost)
+	r.HandleFunc("/api/v1/teacher/{id}", a.getTeacherByID).Methods(http.MethodGet)
+	r.HandleFunc("/api/v1/teachers", a.getTeachers).Methods(http.MethodGet)
 
 	//Course Student
-	r.HandleFunc("/course", a.createCourse).Methods(http.MethodPost)
-	r.HandleFunc("/course/{id}", a.getCourseByID).Methods(http.MethodGet)
-	r.HandleFunc("/courses", a.getAllCourses).Methods(http.MethodGet)
+	r.HandleFunc("/api/v1/course", a.createCourse).Methods(http.MethodPost)
+	r.HandleFunc("/api/v1/course/{id}", a.getCourseByID).Methods(http.MethodGet)
+	r.HandleFunc("/api/v1/courses", a.getAllCourses).Methods(http.MethodGet)
+	r.HandleFunc("/api/v1/course/", a.searchCourse).
+		Queries("search", "{search}").
+		Methods(http.MethodGet)
 
 	// r.Use(setDefaultHeaders)
 	a.router = r
