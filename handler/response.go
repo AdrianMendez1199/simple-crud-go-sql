@@ -17,18 +17,17 @@ type response struct {
 }
 
 func newResponse(messageType string, message string, data interface{}) response {
-	return response{
-		messageType,
-		message,
-		data,
-	}
+	return response{messageType, message, data}
 }
 
 func responseJSON(w http.ResponseWriter, statusCode int, resp response) {
 	w.Header().Set("Content-Type", "application/json")
+
 	w.WriteHeader(statusCode)
 	err := json.NewEncoder(w).Encode(&resp)
+
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+
 }

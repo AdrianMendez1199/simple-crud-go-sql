@@ -39,17 +39,6 @@ func initServices() *API {
 	}
 }
 
-// Setting default headers like a middleware
-// func setDefaultHeaders(next http.Handler) http.Handler {
-// 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-// 		w.Header().Set("Access-Control-Allow-Origin", "*")
-// 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
-// 		w.Header().Set("Cache-Control", "no-store, no-cache, must-revalidate, post-check=0, pre-check=0")
-// 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-// 		next.ServeHTTP(w, r)
-// 	})
-// }
-
 // New  handdle http endpoinst
 func New() Server {
 
@@ -76,7 +65,6 @@ func New() Server {
 		Queries("search", "{search}").
 		Methods(http.MethodGet)
 
-	// r.Use(setDefaultHeaders)
 	a.router = r
 	return a
 }
