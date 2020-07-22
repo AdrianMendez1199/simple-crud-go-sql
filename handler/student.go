@@ -62,3 +62,27 @@ func (a *API) getStudentByID(w http.ResponseWriter, r *http.Request) {
 	responseJSON(w, http.StatusOK, response)
 
 }
+
+func (a *API) updateStudent(w http.ResponseWriter, r *http.Request) {
+
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	if err := json.NewDecoder(r.Body).Decode(&a.studentRepo); err != nil {
+		response := newResponse(Error, "Invalid structure", nil)
+		responseJSON(w, http.StatusBadRequest, response)
+		return
+	}
+
+	student, err := a.studentRepo.UpdateStudent(id, *a.studentRepo)
+
+	if err != nil {
+		response := newResponse(Error, "student not found", nil)
+		responseJSON(w, http.StatusNotFound, response)
+		return
+	}
+
+	response := newResponse(Message, "OK", student)
+	responseJSON(w, http.StatusOK, response)
+
+}
