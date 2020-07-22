@@ -9,17 +9,13 @@ import (
 
 func (a *API) createCourse(w http.ResponseWriter, r *http.Request) {
 
-	err := json.NewDecoder(r.Body).Decode(&a.courseRepo)
-
-	if err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&a.courseRepo); err != nil {
 		response := newResponse(Error, "Bad Request", nil)
 		responseJSON(w, http.StatusBadRequest, response)
 		return
 	}
 
-	err = a.courseRepo.CreateCourse(a.courseRepo)
-
-	if err != nil {
+	if err := a.courseRepo.CreateCourse(a.courseRepo); err != nil {
 		response := newResponse(Error, "error creating course", nil)
 		responseJSON(w, http.StatusInternalServerError, response)
 		return

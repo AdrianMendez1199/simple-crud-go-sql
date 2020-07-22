@@ -9,17 +9,13 @@ import (
 
 func (a *API) createTeacher(w http.ResponseWriter, r *http.Request) {
 
-	err := json.NewDecoder(r.Body).Decode(&a.teacherRepo)
-
-	if err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&a.teacherRepo); err != nil {
 		response := newResponse(Error, "Error in struct teacher", nil)
 		responseJSON(w, http.StatusBadRequest, response)
 		return
 	}
 
-	err = a.teacherRepo.CreateTeacher(*a.teacherRepo)
-
-	if err != nil {
+	if err := a.teacherRepo.CreateTeacher(*a.teacherRepo); err != nil {
 		response := newResponse(Error, "Error creating teacher", nil)
 		responseJSON(w, http.StatusInternalServerError, response)
 		return
@@ -64,9 +60,7 @@ func (a *API) getTeachers(w http.ResponseWriter, r *http.Request) {
 func (a *API) updateTeacher(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 
-	err := json.NewDecoder(r.Body).Decode(&a.teacherRepo)
-
-	if err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&a.teacherRepo); err != nil {
 		response := newResponse(Error, "Invalid structure", nil)
 		responseJSON(w, http.StatusBadRequest, response)
 		return
