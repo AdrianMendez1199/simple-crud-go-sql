@@ -43,7 +43,7 @@ func (a *API) getCourseByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := newResponse(Error, "OK", course)
+	response := newResponse(Message, "OK", course)
 	responseJSON(w, http.StatusOK, response)
 
 }
@@ -82,4 +82,27 @@ func (a *API) searchCourse(w http.ResponseWriter, r *http.Request) {
 	response := newResponse(Message, "OK", courses)
 	responseJSON(w, http.StatusOK, response)
 
+}
+
+func (a *API) updateCourse(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
+
+	err := json.NewDecoder(r.Body).Decode(&a.courseRepo)
+
+	if err != nil {
+		response := newResponse(Error, "Invalid structure", nil)
+		responseJSON(w, http.StatusBadRequest, response)
+		return
+	}
+
+	course, err := a.courseRepo.UpdateCourse(id, *a.courseRepo)
+
+	if err != nil {
+		response := newResponse(Error, "Internal Server Error", nil)
+		responseJSON(w, http.StatusInternalServerError, response)
+		return
+	}
+
+	response := newResponse(Message, "OK", course)
+	responseJSON(w, http.StatusOK, response)
 }

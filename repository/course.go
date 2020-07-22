@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/AdrianMendez1199/simple-crud-go-sql/database"
@@ -77,8 +76,6 @@ func (c *Course) SearchCourse(search string) ([]Course, error) {
 
 	search = strings.ToLower(search)
 
-	fmt.Println(search)
-
 	err := db.Where("lower(title) LIKE ? AND active = ?", "%"+search+"%", true).
 		Preload("Teacher", "active = ?", true).
 		Find(&courses)
@@ -88,4 +85,22 @@ func (c *Course) SearchCourse(search string) ([]Course, error) {
 	}
 
 	return courses, nil
+}
+
+func (c *Course) UpdateCourse(id string, co Course) (Course, error) {
+	db := database.GetInstance().GetConnection()
+	defer db.Close()
+
+	course := Course{}
+
+	if err := db.Where("active = ? AND id = ?", true, id).First(&course).Error; err != nil {
+		return course, err
+	}
+
+	if err := db.Model(&course).Updates(co).Error; err != nil {
+		return course, err
+	}
+
+	return course, nil
+
 }
