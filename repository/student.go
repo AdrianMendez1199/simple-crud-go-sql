@@ -58,3 +58,21 @@ func (st *Student) GetStudentByID(id string) (Student, error) {
 
 	return s, nil
 }
+
+// UpdateStudent find student and update
+func (st *Student) UpdateStudent(id string, input Student) (Student, error) {
+	db := database.GetInstance().GetConnection()
+	defer db.Close()
+
+	s := Student{}
+
+	if err := db.Where("active = ? AND id = ?", true, id).First(&s).Error; err != nil {
+		return s, nil
+	}
+
+	if err := db.Model(&s).Updates(&input).Error; err != nil {
+		return s, nil
+	}
+
+	return s, nil
+}

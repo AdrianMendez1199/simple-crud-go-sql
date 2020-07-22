@@ -9,17 +9,13 @@ import (
 
 func (a *API) createCourse(w http.ResponseWriter, r *http.Request) {
 
-	err := json.NewDecoder(r.Body).Decode(&a.courseRepo)
-
-	if err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&a.courseRepo); err != nil {
 		response := newResponse(Error, "Bad Request", nil)
 		responseJSON(w, http.StatusBadRequest, response)
 		return
 	}
 
-	err = a.courseRepo.CreateCourse(a.courseRepo)
-
-	if err != nil {
+	if err := a.courseRepo.CreateCourse(a.courseRepo); err != nil {
 		response := newResponse(Error, "error creating course", nil)
 		responseJSON(w, http.StatusInternalServerError, response)
 		return
@@ -43,7 +39,7 @@ func (a *API) getCourseByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := newResponse(Error, "OK", course)
+	response := newResponse(Message, "OK", course)
 	responseJSON(w, http.StatusOK, response)
 
 }
@@ -82,4 +78,27 @@ func (a *API) searchCourse(w http.ResponseWriter, r *http.Request) {
 	response := newResponse(Message, "OK", courses)
 	responseJSON(w, http.StatusOK, response)
 
+}
+
+func (a *API) updateCourse(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
+
+	err := json.NewDecoder(r.Body).Decode(&a.courseRepo)
+
+	if err != nil {
+		response := newResponse(Error, "Invalid structure", nil)
+		responseJSON(w, http.StatusBadRequest, response)
+		return
+	}
+
+	course, err := a.courseRepo.UpdateCourse(id, *a.courseRepo)
+
+	if err != nil {
+		response := newResponse(Error, "Internal Server Error", nil)
+		responseJSON(w, http.StatusInternalServerError, response)
+		return
+	}
+
+	response := newResponse(Message, "OK", course)
+	responseJSON(w, http.StatusOK, response)
 }

@@ -57,3 +57,22 @@ func (tc *Teacher) GetTeachers() ([]Teacher, error) {
 	}
 	return teacher, nil
 }
+
+// UpdateTeacher find teacher and update if exists
+func (tc *Teacher) UpdateTeacher(id string, input Teacher) (Teacher, error) {
+
+	db := database.GetInstance().GetConnection()
+	defer db.Close()
+
+	teacher := Teacher{}
+
+	if err := db.Where("active = ? AND id = ?", true, id).First(&teacher).Error; err != nil {
+		return teacher, err
+	}
+
+	if err := db.Model(&teacher).Updates(&input).Error; err != nil {
+		return teacher, err
+	}
+
+	return teacher, nil
+}

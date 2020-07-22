@@ -51,16 +51,19 @@ func New() Server {
 	r.HandleFunc("/api/v1/students", a.createStudent).Methods(http.MethodPost)
 	r.HandleFunc("/api/v1/students", middleware.WriteLog(a.getStudents)).Methods(http.MethodGet)
 	r.HandleFunc("/api/v1/student/{id}", a.getStudentByID).Methods(http.MethodGet)
+	r.HandleFunc("/api/v1/student/{id}", a.updateStudent).Methods(http.MethodPut)
 
 	// handler Teacher
 	r.HandleFunc("/api/v1/teacher", a.createTeacher).Methods(http.MethodPost)
 	r.HandleFunc("/api/v1/teacher/{id}", a.getTeacherByID).Methods(http.MethodGet)
 	r.HandleFunc("/api/v1/teachers", a.getTeachers).Methods(http.MethodGet)
+	r.HandleFunc("/api/v1/teacher/{id}", a.updateTeacher).Methods(http.MethodPut)
 
 	//Course Student
 	r.HandleFunc("/api/v1/course", a.createCourse).Methods(http.MethodPost)
 	r.HandleFunc("/api/v1/course/{id}", a.getCourseByID).Methods(http.MethodGet)
 	r.HandleFunc("/api/v1/courses", a.getAllCourses).Methods(http.MethodGet)
+	r.HandleFunc("/api/v1/course/{id}", a.updateCourse).Methods(http.MethodPut)
 	r.HandleFunc("/api/v1/course/", a.searchCourse).
 		Queries("search", "{search}").
 		Methods(http.MethodGet)
