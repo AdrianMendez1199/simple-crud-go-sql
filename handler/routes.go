@@ -56,6 +56,7 @@ func New() Server {
 	r.HandleFunc("/api/v1/teacher", a.createTeacher).Methods(http.MethodPost)
 	r.HandleFunc("/api/v1/teacher/{id}", a.getTeacherByID).Methods(http.MethodGet)
 	r.HandleFunc("/api/v1/teachers", a.getTeachers).Methods(http.MethodGet)
+	r.HandleFunc("/api/v1/teacher/{id}", a.updateTeacher).Methods(http.MethodPut)
 
 	//Course Student
 	r.HandleFunc("/api/v1/course", a.createCourse).Methods(http.MethodPost)

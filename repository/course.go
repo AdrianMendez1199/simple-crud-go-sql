@@ -87,7 +87,8 @@ func (c *Course) SearchCourse(search string) ([]Course, error) {
 	return courses, nil
 }
 
-func (c *Course) UpdateCourse(id string, co Course) (Course, error) {
+// UpdateCourse find course anc update especific params
+func (c *Course) UpdateCourse(id string, input Course) (Course, error) {
 	db := database.GetInstance().GetConnection()
 	defer db.Close()
 
@@ -97,7 +98,7 @@ func (c *Course) UpdateCourse(id string, co Course) (Course, error) {
 		return course, err
 	}
 
-	if err := db.Model(&course).Updates(co).Error; err != nil {
+	if err := db.Model(&course).Updates(&input).Error; err != nil {
 		return course, err
 	}
 

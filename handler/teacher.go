@@ -59,5 +59,28 @@ func (a *API) getTeachers(w http.ResponseWriter, r *http.Request) {
 
 	response := newResponse(Message, "OK", &teachers)
 	responseJSON(w, http.StatusOK, response)
+}
+
+func (a *API) updateTeacher(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
+
+	err := json.NewDecoder(r.Body).Decode(&a.teacherRepo)
+
+	if err != nil {
+		response := newResponse(Error, "Invalid structure", nil)
+		responseJSON(w, http.StatusBadRequest, response)
+		return
+	}
+
+	teacher, err := a.teacherRepo.UpdateTeacher(id, *a.teacherRepo)
+
+	if err != nil {
+		response := newResponse(Error, "Internal Server Error", nil)
+		responseJSON(w, http.StatusInternalServerError, response)
+		return
+	}
+
+	response := newResponse(Message, "OK", &teacher)
+	responseJSON(w, http.StatusOK, response)
 
 }
