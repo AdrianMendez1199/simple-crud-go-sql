@@ -18,6 +18,8 @@ func WriteLog(next func(w http.ResponseWriter, r *http.Request)) func(http.Respo
 			t.Year(), t.Month(), t.Day(),
 		)
 
+		fmt.Println(r.Header)
+
 		logPath := "logs/" + formatted
 		err := os.MkdirAll(logPath, 0755)
 		check(err)
@@ -26,7 +28,10 @@ func WriteLog(next func(w http.ResponseWriter, r *http.Request)) func(http.Respo
 		defer f.Close()
 		check(err)
 
-		_, err = f.WriteString("Hello World")
+		_, err = f.WriteString(
+			"" + " Date" + t.String() +
+				"User Agrent: " + r.Header.Get("User-Agent") + " Host: " + r.Header.Get("Host") + "\n")
+
 		check(err)
 
 		next(w, r)

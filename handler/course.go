@@ -83,9 +83,7 @@ func (a *API) searchCourse(w http.ResponseWriter, r *http.Request) {
 func (a *API) updateCourse(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 
-	err := json.NewDecoder(r.Body).Decode(&a.courseRepo)
-
-	if err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&a.courseRepo); err != nil {
 		response := newResponse(Error, "Invalid structure", nil)
 		responseJSON(w, http.StatusBadRequest, response)
 		return

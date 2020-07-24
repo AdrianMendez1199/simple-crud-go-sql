@@ -2,7 +2,6 @@ package server
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"time"
@@ -32,6 +31,6 @@ func Start() {
 
 	err := s.ListenAndServe()
 	if err != nil {
-		log.Println(err)
+		panic(err)
 	}
 }
